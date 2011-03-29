@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include </home/gwj/lab/gwj.h>
+//#include </home/gwj/lab/gwj.h>
+#include "xgwj.h"
 
 int main (int argc , char** argv){
 	printf ("%d\n",ZERO);
