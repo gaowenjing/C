@@ -144,3 +144,4 @@ set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.i
 set termencoding=utf-8
 set updatetime=1
 " vim: set ft=vim :
+set nobackup
