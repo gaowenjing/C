@@ -1,0 +1,80 @@
+#include <stdio.h>
+//see if a function return the same pointer address
+//note: function will return the same pointer address
+char *re(char *word){
+	printf ( "%p\n",word );
+	char *nword=word;
+	printf ( "%p\n",nword );
+	return nword+1;
+}
+int main(int argc, const char *argv[])
+{
+	char *theword="jsdlsfsf";
+	printf ( "%p\n",theword );
+	printf ( "-------------\n" );
+	printf ( "%p\n",re(theword) );
+	printf ( "%p\n",theword );
+	return 0;
+}
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <error.h>
+#include <err.h>
+
+//note: compare expression properly doesn't generate errno
+//note: system will stop the script from going on
+//note: pointer change in a function doesnot affect the main function
+void contain_word(char *w, char a){
+	while (*(w++)){
+		if (*w == a)
+			printf ( "%c is right here\n",a );
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	return 0;
+}
+#include <stdlib.h>
+#include "char.h"
+#include <stdio.h>
+
+int main(int argc, const char *argv[])
+{
+//note: seems only switch could do the 1 ... 5 format
+//	int a=1;
+//	if (a == 1 ... 5 )
+//		printf ( "true\n" );
+	char *w="234sdf234s";
+	printf ( "\n",count_char(w));
+//	printf ( "%i\n",atoi(w) );
+	return 0;
+}
+#include <stdlib.h>
+#include <stdio.h>
+int main(int argc, const char *argv[])
+{
+//note: initialized char pointer can not asign value again and can point to another address
+	char *word="jsfdlsdfln";
+//	*(word+3)='d';
+//	word=malloc(10);
+	word="fjsdfs";
+	printf("%s\n",word);
+//	free(word);
+	return 0;
+}
+#include 	<stdio.h>
+//note: function stops after return function
+int r(int n){
+	if (n>0) {
+		return 100;
+		printf ( "well\n" ); }
+	else 
+		return 200;
+}
+int main(int argc, const char *argv[])
+{
+	printf ( "%i\n",r(-19) );
+	return 0;
+}
