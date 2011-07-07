@@ -1,1 +1,2 @@
-unsigned int ttoms(char *t);
+double ttoms(char *t);
+double ttous(char *t);

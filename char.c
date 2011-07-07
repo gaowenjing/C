@@ -5,7 +5,7 @@
 //count how many character in a word
 int count_char(char *c){
 	int j=0;
-	while (*(c++) ) {
+	while (*(c+j) ) {
 		j++;
 	}
 	return j;
@@ -16,9 +16,8 @@ char *shrink_char(char *word,int n) {
 	int wc=count_char(word);
 	if (wc<abs(n)) 
 		error(1,0,"out of range");
-	if (n>=0) {
+	if (n>=0) 
 		return word+n;
-	}
 	else {
 		char *new_word=malloc(sizeof(word)); 
 		int i;
