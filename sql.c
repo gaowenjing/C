@@ -3,6 +3,7 @@
 #include <sqlite3.h>
 #include <errno.h>
 #include <string.h>
+#include "argstr.h"
 
 /*test sqlite3 function*/
 
@@ -12,11 +13,16 @@ void err(int exval, const char *fmt) {
 	exit (exval);
 }
 
-int main(int argc, const char *argv[])
+int main(int argc, char *argv[])
 {
 	sqlite3 *db;
 	if (sqlite3_open(argv[1], &db) !=0 )
 		err(errno, "open database error");
+	char *args = argstr(argc, argv, 2);
+	char *mess;
+	sqlite3_exec(db, args, NULL, NULL, &mess);
+	if (mess != NULL)
+		printf ( "%s\n", mess );
 	/*create table gwj*/
 	/*redicioulars prepare/step/finalize 3 step */
 //	char *zsql= "create table gwj(text, priority INTERGER)";
@@ -29,7 +35,7 @@ int main(int argc, const char *argv[])
 //		sqlite3_prepare_v2(db, zsql_drop, -1, &gwj_c, NULL);
 //		sqlite3_step(gwj_c);
 //	}
-	sqlite3_exec(db, "create table gwj(test, priority INTERGER)", )
+//	sqlite3_exec(db, "create table gwj(test, priority INTERGER)", );
 	sqlite3_close(db);
 	return 0;
 }

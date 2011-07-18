@@ -8,12 +8,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "argstr.h"
-#include "time.h"
+#include "prtime.h"
 
 #define INO_VERSION 1.0
 /*select events to Monitor*/
-//#define EVENTS IN_ALL_EVENTS
-#define EVENTS IN_ACCESS|IN_ATTRIB|IN_MODIFY|IN_CLOSE|IN_MOVE|IN_OPEN
+#define EVENTS IN_ALL_EVENTS
+//#define EVENTS IN_ACCESS|IN_ATTRIB|IN_MODIFY|IN_CLOSE|IN_MOVE|IN_OPEN
+
+#define DEBUG_FLAG 1
 
 /*print help message and exit with a value*/
 void help_msg(char *s, int exval){
@@ -21,10 +23,10 @@ void help_msg(char *s, int exval){
 	exit(exval);
 }
 /*print the inotify events*/
-void pr_event(unsigned int c){
-	char *s;
-	switch (c) {
-		case IN_MODIFY:  s="modified";  break;
+void pr_event(uint32_t emask, char *filename, uint32_t len, char *path){
+	char *s=NULL;
+	switch (emask) {
+		case IN_MODIFY:  s="modified"; break;
 		case IN_ATTRIB:  s="attrib";    break;
 		case IN_ACCESS:  s="access";    break;
 		case IN_CLOSE: 	 s="close";     break;
@@ -33,28 +35,36 @@ void pr_event(unsigned int c){
 		default: 	 s="other";
 	}
 	/*print time and event */
-	printf ( "[\e[1;32m%s\e[1;0m] recieved %s event %u in %u\n", my_time(), s, c, IN_ALL_EVENTS );
+	if (len == 0 )
+		filename=path;
+	printf ( "[\e[1;32m%s\e[1;0m] Received \e[1;31m%s(%u)\e[0m from \e[1;33m%s\e[0m\n", my_time(), s, emask, filename);
 }
 
 int main(int argc, char *argv[])
 {
-	if (argc < 3 ) 
+	if (argc < 2 ) 
 		help_msg(argv[0], 1);
 	/*make arguemnt to command string for system()*/
-	char *cmd = argstr(argc, argv, 2);
+	char *cmd=NULL;
+	if (argv[2])
+		cmd = argstr(argc, argv, 2);
 	/*inotify funtions start */
 	int fd, wd;
 	struct inotify_event e;
 start:
 	fd = inotify_init();
-	if ((wd = inotify_add_watch(fd, argv[1], EVENTS)) == -1)
-		error(1, 0, "inotify add watch error, %s exist?", argv[1]);
-	read(fd, &e, sizeof(e));                /* read events */
-	pr_event(e.mask);                       /* print events */
+	if ((wd = inotify_add_watch(fd, argv[1], EVENTS )) == -1)
+		error(1, 0, "Inotify add watch error, %s exist?", argv[1]);
+	ssize_t bs = read(fd, &e, sizeof(e)+256);                /* read events */
+	printf ( "ssize_t read = %lu\n", bs );
+	pr_event(e.mask, e.name, e.len, argv[1]);   /* print events */
 	inotify_rm_watch(fd, wd);               /* clean up */
 	close(fd);
-	/*inotify funtions end*/
-	system(cmd);                            /* run command */
+	/*inotify funtions ends and run a command*/
+	if (cmd && open(argv[2], O_RDONLY) != -1) 
+		system(cmd);                    
+	else
+		printf ( "error running cmd\n" );
 	goto start;                             /* restart Monitor */
 	return 0;
 }

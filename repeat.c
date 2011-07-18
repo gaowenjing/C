@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <time.h>
 #include "argstr.h"
-#include "time.h"
+#include "prtime.h"
 #include "ttoms.h"
 
 #define DEF_DELAY_TIME 1000000

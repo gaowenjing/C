@@ -73,7 +73,9 @@ int main(int argc, char *argv[])
 	if (flag_daemon == 1){
 		pid_t pid = fork();
 		/*exit main process leave fork process*/
-		if ( pid > 0 ) 
+		if ( pid < 0 )
+			error(1, 0, "can not fork");
+		else if ( pid > 0 ) 
 			exit (0);
 	}
 	/*open Display*/

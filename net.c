@@ -1,15 +1,11 @@
+#include <unistd.h>
 #include <stdio.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/types.h>
 
-#define LING 0
 int main(int argc,char **argv){
-//	struct sockaddr {
-//		sa_family_t sa_family;
-//		char        sa_data[14];
-//	};
-	int sfd = socket(AF_INET,SOCK_STREAM,LING);
+	int sfd = socket(AF_INET,SOCK_STREAM,0);
 	if ( sfd < 0 ) 
 		perror ("socket");
 	struct sockaddr_in address;

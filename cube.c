@@ -9,6 +9,6 @@ struct point
 
 int main(int argc, const char *argv[])
 {
-	struct point A = { 0,1,2 };
+//	struct point A = { 0,1,2 };
 	return 0;
 }
