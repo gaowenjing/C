@@ -24,17 +24,17 @@ int main(int argc, const char *argv[])
 	/*do we need this function?*/
 //	refresh();
 	int k;
-	int exval = 1;
+	int excode = 1;
 	int bold_flag = 0;
 	int x, y;
 	int row, col;
-	while (exval)
+	while (excode)
 	{
 		k = getch();
 		switch (k)
 		{
 			case 'q': endwin(); 
-				  exval = 0;
+				  excode = 0;
 				  break;
 			case 'h': help();
 				  break;
