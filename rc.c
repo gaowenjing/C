@@ -12,10 +12,7 @@ int main(int argc, const char *argv[])
 	if (fs == NULL)
 		return errno;
 	char left[20], right[20];
-//	fgets(s, 1024, fs);
-//	printf ( "%s", s );
-//	fgets(s, 1024, fs);
-//	printf ( "%s", s );
+	/*format %s = %s*/
 	while ( fscanf ( fs, "%s = %s", left, right ) != EOF )
 	{
 		printf ( "left = %s\n", left );

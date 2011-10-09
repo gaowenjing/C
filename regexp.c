@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/*Change a string to regular expression*/
+
 int main(int argc, char *argv[])
 {
 	int optind=1;

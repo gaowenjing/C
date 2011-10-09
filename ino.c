@@ -46,8 +46,11 @@ int main(int argc, char *argv[])
 		help_msg(argv[0], 1);
 	/*make arguemnt to command string for system()*/
 	char *cmd=NULL;
+//	char cmd[1024];
 	if (argv[2])
 		cmd = argstr(argc, argv, 2);
+	else
+		fprintf(stderr, "No cmd found.\n");
 	/*inotify funtions start */
 	int fd, wd;
 	struct inotify_event e;
@@ -55,16 +58,16 @@ start:
 	fd = inotify_init();
 	if ((wd = inotify_add_watch(fd, argv[1], EVENTS )) == -1)
 		error(1, 0, "Inotify add watch error, %s exist?", argv[1]);
-	ssize_t bs = read(fd, &e, sizeof(e)+256);                /* read events */
-	printf ( "ssize_t read = %lu\n", bs );
+	read(fd, &e, sizeof(e)+256);                /* read events */
+//	ssize_t bs = read(fd, &e, sizeof(e)+256);                /* read events */
+//	printf ( "ssize_t read = %lu\n", bs );
 	pr_event(e.mask, e.name, e.len, argv[1]);   /* print events */
 	inotify_rm_watch(fd, wd);               /* clean up */
 	close(fd);
 	/*inotify funtions ends and run a command*/
-	if (cmd && open(argv[2], O_RDONLY) != -1) 
+	/*if (cmd && open(argv[2], O_RDONLY) != -1) */
+	if ( cmd )
 		system(cmd);                    
-	else
-		printf ( "error running cmd\n" );
 	goto start;                             /* restart Monitor */
 	return 0;
 }

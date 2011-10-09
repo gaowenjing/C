@@ -5,17 +5,17 @@
 
 int main(int argc, const char *argv[])
 {
-//	char *a=NULL;
-//	unsigned long long i=1;
-//	while(1)
-//	{
-//		a = realloc (a, i);
-//		i+=10000000000;
-//		printf ( "%p\n", a );
-//		usleep(100);
-//	}
-	char *s="fsdfsd";
-	printf ( "%i\n", atoi(s) );
+	char *a=malloc(1);
+	printf ( "%p\n", a );
+	unsigned long long i=1;
+	while(1)
+	{
+		a = realloc (a, i);
+		printf ( "%p\n", a );
+		i+=10000000000;
+		printf ( "%p\n", a );
+		usleep(1000000);
+	}
 	return 0;
 }
 

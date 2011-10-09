@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 		/*exit main process leave fork process*/
 		if ( pid < 0 )
 			error(1, 0, "can not fork");
-		else if ( pid > 0 ) 
+		else if ( pid > 0 )             /* parent exit */
 			exit (0);
 	}
 	/*open Display*/

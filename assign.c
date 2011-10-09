@@ -5,7 +5,7 @@
 
 #define xxx 1
 
-/*note: In function pointer changed*/
+/*note: In function pointer is changed*/
 void assign( char x )
 {
 	printf ( "in-func(1) %p\n", &x );

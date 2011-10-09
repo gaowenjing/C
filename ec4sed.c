@@ -47,6 +47,14 @@ int main(int argc, char *argv[])
 //					str[j] = '\\';
 //					str[++j] = argv[optind][i]; 
 //					break;
+				case ']':
+					str[j] = '\\';
+					str[++j] = argv[optind][i]; 
+					break;
+				case '[':
+					str[j] = '\\';
+					str[++j] = argv[optind][i]; 
+					break;
 				default:
 					/*str = realloc(str, j+1);*/
 					str[j] = argv[optind][i];

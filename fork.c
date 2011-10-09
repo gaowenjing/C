@@ -41,8 +41,9 @@ int main(int argc, const char *argv[])
 		case 0 :                 /* child */
 			loop();
 			break;
-		default:
+		default:                        /* parent */
 			if (xke() == 0)
+				/*useless course they are in different process*/
 				excode = 0;
 	}
 	return 0;
