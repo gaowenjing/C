@@ -4,12 +4,12 @@
 #include <errno.h>
 #include <iconv.h>
 
-#define DEF_BUF 1024
+#define MAXBUF 256
 #define FROMCODE "gbk"
 #define TOCODE "utf8"
 
 /*use iconv convert FROMCODE to TOCODE*/
-char *iconv_convert (char *inbuf)
+char *iconv_return (char *inbuf)
 {
 	/*iconv_open */
 	iconv_t cd = iconv_open(TOCODE, FROMCODE);
@@ -17,8 +17,11 @@ char *iconv_convert (char *inbuf)
 		fprintf (stderr, "CAN NOT COVERT ");
 	/*converting */
 	size_t inlen = strlen(inbuf);
+	/*Chinese char: gbk 2 bytes/char, utf8 3 bytes/char*/
 	size_t outlen = inlen*2;
-	char *outbuf = malloc(outlen);
+//	static char outptr[MAXBUF];
+	char *outptr = malloc(outlen);
+	char *outbuf = outptr;
 	size_t rc = iconv(cd, &inbuf, &inlen, &outbuf, &outlen);
 	if (rc == (size_t) -1)
 	{
@@ -37,7 +40,7 @@ char *iconv_convert (char *inbuf)
 		}
 	}
 	iconv_close(cd);
-	return outbuf;
+	return outptr;
 }
 
 void convert (char *inbuf, char *outbuf)
@@ -51,7 +54,7 @@ void convert (char *inbuf, char *outbuf)
 	size_t outlen = inlen*2;
 	size_t rc = iconv(cd, &inbuf, &inlen, &outbuf, &outlen);
 	if (rc == (size_t) -1)
-		fprintf (stderr, "ERROR ON CONVERTING.\nERRNO == ");
+		fprintf (stderr, "ERROR ON CONVERTING.ERRNO: ");
 	switch (errno)
 	{
 		case E2BIG:
@@ -67,22 +70,39 @@ void convert (char *inbuf, char *outbuf)
 	iconv_close(cd);
 }
 
+void read_stdin (char *inbuf, size_t len)
+{
+	size_t n;
+	while (1)
+	{
+		n = fread(inbuf, len, 1, stdin);
+		if (n < len)
+			break;
+	}
+}
+
 int main(int argc, char *argv[])
 {
-	char *inbuf = malloc(DEF_BUF);
+	char inbuf[MAXBUF];
+	char outbuf[MAXBUF*2];
+	int n;
 	if (argv[1] == NULL)
 	{
-		fread (inbuf, DEF_BUF, 1, stdin);
-//		scanf("%s", inbuf);
+		while ( (fgets(inbuf, MAXBUF, stdin)) != NULL )
+		{
+			convert (inbuf, outbuf);
+			printf ( "%s\n", outbuf );
+//			printf("%s\n", inbuf);
+		}
 	}
-	else 
-		inbuf = argv[1];
-//	char *outbuf = malloc(strlen(inbuf));
-//	convert (inbuf, outbuf);
-//	printf ( "%s\n", outbuf );
-	char *output = iconv_convert(inbuf);
-	printf("%s\n", output);
-//	printf ( "%s\n", iconv_convert(inbuf) );
-//	printf ( "%s\n", inbuf );
+//	else 
+//		inbuf = argv[1];
+
+//	printf("-------------------convert()--------------------\n");
+
+//	printf("-----------------iconv_return()------------------\n");
+//	printf ( "%s\n", iconv_return(inbuf) );
+//	free(inbuf);
+//	free(outbuf);
 	return 0;
 }

@@ -20,5 +20,4 @@ char *my_time(void){
 	/*printf ( "%p\n",my_time );*/          /* same pointer */
 	if (strftime(my_time, 10, "%T", localtime(&t)) == 0)
 	       fprintf (stderr, "strftime error\n");
-	return my_time;	
-}
+	return my_time

@@ -47,4 +47,3 @@ help: xss.c ttoms.c char.o
 	@echo help: xss.c ttoms.c char.o 
 	@echo -e '\t$$< = $<\n\t$$@ = $@\n\t$$% = $%\n\t$$^ = $^'
 
-

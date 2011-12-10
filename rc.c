@@ -1,23 +1,31 @@
-#include 	<stdio.h>
-#include 	<stdlib.h>
-#include 	<unistd.h>
-#include 	<string.h>
-#include 	<errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <error.h>
+#include <errno.h>
+
+#define CONF "gwj.d"
 
 /*read config*/
 
 int main(int argc, const char *argv[])
 {
-	FILE *fs = fopen(argv[1], "r");
+	FILE *fs = fopen(CONF, "r");
 	if (fs == NULL)
-		return errno;
-	char left[20], right[20];
-	/*format %s = %s*/
-	while ( fscanf ( fs, "%s = %s", left, right ) != EOF )
+		error(EXIT_FAILURE, errno, "%s", CONF);
+	char left[20], right[20], tmp[1024];
+	/*get configure file value*/
+	int n;
+	while ( (n = fscanf(fs, "%[^= \t\n]%[= \t\n]%[^\t\n]\n",
+		 left, tmp, right)) > 0)        /* EOF = -1 */
 	{
-		printf ( "left = %s\n", left );
-		printf ( "right = %s\n", right );
+		printf("n = %d\n", n);
+		printf ( "left = %s\t", left );
+		printf ( "right = %s\t", right );
+		printf ( "tmp = %s\n", tmp );
 	}
 	return 0;
+
 }
 
