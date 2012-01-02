@@ -85,7 +85,6 @@ int main(int argc, char *argv[])
 {
 	char inbuf[MAXBUF];
 	char outbuf[MAXBUF*2];
-	int n;
 	if (argv[1] == NULL)
 	{
 		while ( (fgets(inbuf, MAXBUF, stdin)) != NULL )

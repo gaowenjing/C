@@ -15,8 +15,6 @@
 #define EVENTS IN_ALL_EVENTS
 //#define EVENTS IN_ACCESS|IN_ATTRIB|IN_MODIFY|IN_CLOSE|IN_MOVE|IN_OPEN
 
-#define DEBUG_FLAG 1
-
 /*print help message and exit with a value*/
 void help_msg(char *s, int exval){
 	printf ( "USAGE: %s FILENAME COMMAND \n", s);

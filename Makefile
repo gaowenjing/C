@@ -1,49 +1,42 @@
-#SHELL = /bin/bash
-CFLAGS = -O2 -g -Wall
+CFLAGS = -O2 -g -Wall -Ilibs
 CC = gcc
-.SUFFIXES: .c .o
-.PHONY: distclean all help
+VPATH = ./libs
+OUTPUT_OPTION = -o ~/bin/$@
+.SUFFIXES: .c
+.PHONY: clean distclean all help
 
-all: repeat ino lid xss tmp fork fork2 xw
+all: $(patsubst %.c,%,$(wildcard *.c)) 
+
+ec4sed iconv iconv2 read regexp rc recurse ec4sql geoip leak net rc1 rrow:
+	$(CC) $(CFLAGS) $@.c $(OUTPUT_OPTION)
 
 # X11 libs 
-xke.o: xke.c
-fork2: fork2.c xke.o
-fork: fork.c xke.o
 xw: xw.c
-xw fork fork2 xke.o:
-	$(CC) $(CFLAGS) -lX11 $^ -o $@
+xw xke.c:
+	$(CC) $(CFLAGS) -lX11 $^ $(OUTPUT_OPTION)
 
 # Xscreensave libs 
-xss: xss.c ttoms.o char.o
-	$(CC) $(CFLAGS) -lXss $^  -o $@
+xss: xss.c ttoms.c char.c
+	$(CC) $(CFLAGS) -lX11 -lXss $^  $(OUTPUT_OPTION)
 
 # Normal multi libs 
-ttoms: ttoms.c char.o 
-regexp: regexp.c char.o
-repeat: repeat.c argstr.o time.o ttoms.o char.o
-ino: ino.c argstr.o time.o
-tmp: tmp.c argstr.o char.o time.o
-ttoms regexp repeat ino tmp:
-	$(CC) $(CFLAGS) $^ -o $@
+repeat: repeat.c argstr.c ttoms.c char.c prtime.c
+ino: ino.c argstr.c prtime.c
+ino3: ino3.c argstr.c prtime.c
+tmp: tmp.c argstr.c char.c
+repeat ino ino3 tmp:
+	$(CC) $(CFLAGS) $^ $(OUTPUT_OPTION)
 
 # Sqlite3 libs
-sql: sql.c 
-	$(CC) $(CFLAGS) -lsqlite3 $^ -o $@ 
+sql: sql.c argstr.c
+privacy: privacy.c
+sql privacy:
+	$(CC) $(CFLAGS) -lsqlite3 $^ $(OUTPUT_OPTION) 
 
-# Modules 
-obj-m += m.o
-m:
-	make -C /kernel M=$(PWD) modules
+# ncurses libs
+ncurses: ncurses.c
+	$(CC) $(CFLAGS) -lncurses $^ $(OUTPUT_OPTION) 
 
 # clean directory
+clean:
 distclean:
-	rm *.o
-	find -maxdepth 1 -executable -exec rm {} \;
-
-# print Makefile help for me 
-help: xss.c ttoms.c char.o
-	@echo TARGET ... : PREREQUISITES ...
-	@echo help: xss.c ttoms.c char.o 
-	@echo -e '\t$$< = $<\n\t$$@ = $@\n\t$$% = $%\n\t$$^ = $^'
-

@@ -9,6 +9,7 @@ int r (int i) {
 		printf ( "%i\n", i );
 	else
 		return 0;
+	printf ("%p\n", r);
 	r ( --i );
 	return 1;
 }

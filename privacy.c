@@ -5,12 +5,18 @@
 #include <string.h>
 #include <unistd.h>
 
+/*keywords that deleting from history*/
+#define KEYWORDS { \
+	"fuck", "renti", "rtys", "yishu", "xvideo", "人体", \
+	"pussy", "japanese", "porn", "大胆", "人體", "亚洲色", \
+	"色色", "女优" \
+}
+
 int verbose_flag = 0;
-/*error function*/
-void err(int exval, const char *fmt)
+
+char * parseDatabasePath(void)
 {
-	printf ( "%s\n", fmt );
-	exit (exval);
+	printf()
 }
 
 /*delete from database*/
@@ -28,12 +34,7 @@ void privacy(char *keyword, sqlite3 *db)
 	free(mess);
 }
 
-/*keywords that deleting from history*/
-char *keywords[] = {
-	"fuck", "renti", "rtys", "yishu", "xvideo", "人体", 
-	"pussy", "japanese", "porn", "大胆", "人體", "亚洲色",
-	"色色", "女优"
-};
+char *keywords[] = KEYWORDS;
 
 int main(int argc, char *argv[])
 {
@@ -53,10 +54,14 @@ int main(int argc, char *argv[])
 				exit(EXIT_FAILURE);
 		}
 	}
+
 	/*open database*/
 	sqlite3 *db;
-	if (sqlite3_open("/home/gwj/.mozilla/firefox/bul0h084.default/places.sqlite", &db) !=0 )
-		err(errno, "Open database error");
+	if (sqlite3_open("/home/gwj/.mozilla/firefox/bul0h084.default/places.sqlite", &db) != 0 ){
+		fprintf(stderr, "Open database error\n");
+		return -1;
+	}
+
 	/*execute sql*/
 	int i;
 	for ( i=0 ; i<sizeof(keywords)/sizeof(*keywords) ; i++)

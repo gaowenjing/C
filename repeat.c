@@ -6,14 +6,16 @@
 #include "prtime.h"
 #include "ttoms.h"
 
-#define DEF_DELAY_TIME 1000000
-
-//note:funtion in another file could not get main file's datatype declaration
+#define DELAY_TIME 1000000
+#define YES 1
+#define NO 0
 
 /*help message with exit value*/
-void help_msg(int exval){
+void help(int exval)
+{
 	printf ( "USAGE: repeat [option] command\n" );
 	printf ( "\t-d time[u,i,s,m,h] delay between commands (default=1s)\n" );
+	printf ( "\t-f keep running even command failed\n" );
 	printf ( "\t-n no delay between commands \n" );
 	printf ( "\t-t toggle time stamp (default on)\n" );
 	printf ( "\t[u,i,s,m,h] microsecond millisecond second minute hour\n" );
@@ -22,42 +24,47 @@ void help_msg(int exval){
 
 int main(int argc, char *argv[])
 {
-	/*handle options */
-	if ( argc ==  1 ) 
-		help_msg(1);
-	/*initial options*/
-	int opt, delay=DEF_DELAY_TIME, sh_time_flag=1;
-	while ( (opt=getopt(argc, argv, "+d:hnt")) != -1 ) {
-		switch (opt){
+	if ( argc <  1 ) 
+		help(1);
+	int opt, 		/* handling arguments */
+	    delay 		= DELAY_TIME,
+	    force_run 		= NO,
+	    sh_time_flag 	= YES;
+	while ( (opt = getopt(argc, argv, "+d:fhnt")) != -1 )
+	{
+		switch (opt)
+		{
 			case 'd':
 				delay = ttous(optarg);
 				break;
+			case 'f':
+				force_run = YES;
+				break;
 			case 'h':
-				help_msg(0);
+				help(0);
 				break;
 			case 'n':
-				delay = 0;
+				delay = NO;
 				break;
 			case 't':
-				sh_time_flag=0;
+				sh_time_flag = NO;
 				break;
 		}
 	}
-	/*make argv to string for command*/
-	if (argv[optind] == NULL ) 
-		help_msg(2);
-	char *args = argstr(argc, argv, optind);
-	/*run a command*/
-	while (1){
-		/*print time*/
-		if (sh_time_flag == 1)
-			pr_time();
+
+	if (argv[optind] == NULL) 
+		help(2);
+	char *command = argstr(argc, argv, optind);
+
+	while (YES)
+	{
+		if (sh_time_flag == YES)
+			pr_time(); 		/*print time*/
 		else 
-			printf ( "\n" );
-		if (system(args) > 1)
+			printf ("\n");          /* divide two result */
+		if (system(command) > 1 && force_run == NO)
 			break;
 		usleep(delay);
 	}
-	/*properbly never run*/
 	return -1;
 }
