@@ -9,63 +9,96 @@
 #include <stdlib.h>
 #include "argstr.h"
 #include "prtime.h"
+#include <string.h>
 
-#define INO_VERSION 1.0
-/*select events to Monitor*/
-#define EVENTS IN_ALL_EVENTS
-//#define EVENTS IN_ACCESS|IN_ATTRIB|IN_MODIFY|IN_CLOSE|IN_MOVE|IN_OPEN
+#define EVENTS IN_CLOSE_WRITE|IN_ONESHOT
 
-/*print help message and exit with a value*/
-void help_msg(char *s, int exval){
-	printf ( "USAGE: %s FILENAME COMMAND \n", s);
-	exit(exval);
-}
-/*print the inotify events*/
-void pr_event(uint32_t emask, char *filename, uint32_t len, char *path){
-	char *s=NULL;
-	switch (emask) {
-		case IN_MODIFY:  s="modified"; break;
-		case IN_ATTRIB:  s="attrib";    break;
-		case IN_ACCESS:  s="access";    break;
-		case IN_CLOSE: 	 s="close";     break;
-		case IN_MOVE: 	 s="move";      break;
-		case IN_OPEN: 	 s="open";      break;
-		default: 	 s="other";
+#define MAXBUF 256
+#define CMDFILE "cmd"
+char *parseCmd(void)
+{
+	FILE *fs = fopen(CMDFILE, "r");
+	if (fs == NULL) {
+		fprintf(stderr, "Open %s Error\n", CMDFILE);
+		exit(EXIT_FAILURE);
 	}
-	/*print time and event */
-	if (len == 0 )
-		filename=path;
-	printf ( "[\e[1;32m%s\e[1;0m] Received \e[1;31m%s(%u)\e[0m from \e[1;33m%s\e[0m\n", my_time(), s, emask, filename);
+	char buf[MAXBUF];
+	char *str = malloc(1024);
+	while (fgets(buf, MAXBUF, fs) != NULL) {
+		strncat(str, buf, strlen(buf) - 1);
+		strcat(str, " ; ");
+	}
+	return str;
+}
+
+/*print the inotify events*/
+void printEvent(struct inotify_event *event)
+{
+	printf("[\e[1;32m%s\e[1;0m] EVENTS: ", my_time());
+
+	if (event->mask & IN_MODIFY)
+		printf("modified ");
+	if (event->mask & IN_ATTRIB)
+		printf("attrib ");
+	if (event->mask & IN_ACCESS)
+		printf("access ");
+//      if (event->mask & IN_CLOSE)     printf("close ");
+	if (event->mask & IN_MOVE)
+		printf("move ");
+	if (event->mask & IN_OPEN)
+		printf("open ");
+	if (event->mask & IN_ISDIR)
+		printf("isdir ");
+	if (event->mask & IN_ONESHOT)
+		printf("oneshot ");
+	if (event->mask & IN_DELETE)
+		printf("delete ");
+	if (event->mask & IN_DELETE_SELF)
+		printf("delete_self ");
+	if (event->mask & IN_MOVE_SELF)
+		printf("move_self ");
+	if (event->mask & IN_CLOSE_WRITE)
+		printf("close_write ");
+	if (event->mask & IN_CLOSE_NOWRITE)
+		printf("close_nowrite ");
+	if (event->mask & IN_CREATE)
+		printf("create ");
+
+	if (event->len)
+		printf("FILE: \e[1;33m%s\e[0m", event->name);
+	printf("\n");
 }
 
 int main(int argc, char *argv[])
 {
-	if (argc < 2 ) 
-		help_msg(argv[0], 1);
-	/*make arguemnt to command string for system()*/
-	char *cmd=NULL;
-//	char cmd[1024];
+	if (argc < 2) {
+		fprintf(stderr, "Usage: %s FILENAME [COMMAND]\n", argv[0]);
+		return EXIT_FAILURE;
+	}
+
+	/*make arguemnt to command string for system() */
+	char *cmd = NULL;
 	if (argv[2])
 		cmd = argstr(argc, argv, 2);
 	else
-		fprintf(stderr, "No cmd found.\n");
+		cmd = parseCmd();
+
 	/*inotify funtions start */
 	int fd, wd;
-	struct inotify_event e;
-start:
+	struct inotify_event event;
+ start:
 	fd = inotify_init();
-	if ((wd = inotify_add_watch(fd, argv[1], EVENTS )) == -1)
+	if ((wd = inotify_add_watch(fd, argv[1], EVENTS)) == -1)
 		error(1, 0, "Inotify add watch error, %s exist?", argv[1]);
-	read(fd, &e, sizeof(e)+256);                /* read events */
-//	ssize_t bs = read(fd, &e, sizeof(e)+256);                /* read events */
-//	printf ( "ssize_t read = %lu\n", bs );
-	pr_event(e.mask, e.name, e.len, argv[1]);   /* print events */
-	inotify_rm_watch(fd, wd);               /* clean up */
+	read(fd, &event, sizeof(event) + MAXBUF);
+	printEvent(&event);
+	inotify_rm_watch(fd, wd);	/* clean up */
 	close(fd);
-	/*inotify funtions ends and run a command*/
-	/*if (cmd && open(argv[2], O_RDONLY) != -1) */
-	if ( cmd )
-		system(cmd);                    
-	goto start;                             /* restart Monitor */
+
+	/*inotify funtions ends and run a command */
+	if (cmd) {
+		system(cmd);
+	}
+	goto start;		/* restart Monitor */
 	return 0;
 }

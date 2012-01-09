@@ -4,19 +4,19 @@
 #include 	<string.h>
 
 /*recursion function */
-int r (int i) {
-	if ( i > 0 )
-		printf ( "%i\n", i );
+int r(int i)
+{
+	if (i > 0)
+		printf("%i\n", i);
 	else
 		return 0;
-	printf ("%p\n", r);
-	r ( --i );
+	printf("%p\n", r);
+	r(--i);
 	return 1;
 }
 
 int main(int argc, const char *argv[])
 {
-	r(10) > 0 ? printf ( "Y\n" ) : printf ( "N\n" );	
+	r(10) > 0 ? printf("Y\n") : printf("N\n");
 	return 0;
 }
-

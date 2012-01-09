@@ -1,18 +1,20 @@
 CFLAGS = -O2 -g -Wall -Ilibs
 CC = gcc
 VPATH = ./libs
-OUTPUT_OPTION = -o ~/bin/$@
+#OUTPUT_OPTION = -o ./bin/$@
 .SUFFIXES: .c
-.PHONY: clean distclean all help
+.PHONY: clean distclean all help install
 
-all: $(patsubst %.c,%,$(wildcard *.c)) 
+bin := $(patsubst %.c,%,$(wildcard *.c)) 
+obj := $(patsubst %.c,%.o,$(wildcard *.c)) 
 
-ec4sed iconv iconv2 read regexp rc recurse ec4sql geoip leak net rc1 rrow:
-	$(CC) $(CFLAGS) $@.c $(OUTPUT_OPTION)
+all: $(bin)
+clean:
+	$(RM) $(bin)
+	$(RM) $(obj)
 
 # X11 libs 
 xw: xw.c
-xw xke.c:
 	$(CC) $(CFLAGS) -lX11 $^ $(OUTPUT_OPTION)
 
 # Xscreensave libs 
@@ -22,7 +24,6 @@ xss: xss.c ttoms.c char.c
 # Normal multi libs 
 repeat: repeat.c argstr.c ttoms.c char.c prtime.c
 ino: ino.c argstr.c prtime.c
-ino3: ino3.c argstr.c prtime.c
 tmp: tmp.c argstr.c char.c
 repeat ino ino3 tmp:
 	$(CC) $(CFLAGS) $^ $(OUTPUT_OPTION)
@@ -37,6 +38,8 @@ sql privacy:
 ncurses: ncurses.c
 	$(CC) $(CFLAGS) -lncurses $^ $(OUTPUT_OPTION) 
 
-# clean directory
-clean:
-distclean:
+
+# Installation
+install_files := geoip xss privacy repeat
+install:
+	install $(install_files) ~/bin
