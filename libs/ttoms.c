@@ -2,7 +2,8 @@
 #include	<stdio.h>
 #include 	"char.h"
 
-/*convert time format to millionseconds*/
+/* convert time format to millisecond 
+ * 1 second = 1000 milliseconds */
 double ttoms(char *t)
 {
 	sw a = split_word(t, -1);
@@ -22,7 +23,8 @@ double ttoms(char *t)
 	return 0;
 }
 
-/*convert time format to microsecond*/
+/* convert time format to microsecond 
+ * 1 second = 1000000 microseconds */
 double ttous(char *t)
 {
 	sw a = split_word(t, -1);

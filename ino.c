@@ -1,20 +1,24 @@
-/*This program run a command after file is modified*/
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <error.h>
 #include <sys/inotify.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "argstr.h"
 #include "prtime.h"
 #include <string.h>
+#include <signal.h>
 
-#define EVENTS IN_CLOSE_WRITE|IN_ONESHOT
+#define EVENTS IN_CLOSE_WRITE
 
+#define ERROR(str, i) \
+	{ perror(str); return i; }
+
+/* This program run a command after file is modified */
 #define MAXBUF 256
 #define CMDFILE "cmd"
+/* Read command from a file */
 char *parseCmd(void)
 {
 	FILE *fs = fopen(CMDFILE, "r");
@@ -23,7 +27,7 @@ char *parseCmd(void)
 		exit(EXIT_FAILURE);
 	}
 	char buf[MAXBUF];
-	char *str = malloc(1024);
+	char *str = malloc(MAXBUF);
 	while (fgets(buf, MAXBUF, fs) != NULL) {
 		strncat(str, buf, strlen(buf) - 1);
 		strcat(str, " ; ");
@@ -69,8 +73,32 @@ void printEvent(struct inotify_event *event)
 	printf("\n");
 }
 
+int keep_running = 1;
+void intHandler(int sig)
+{
+	fprintf(stderr, "recived interrupt.\n");
+	keep_running = 0;
+}
+
+int inotify(char *filename)
+{
+	int fd, wd;
+	struct inotify_event event;
+	fd = inotify_init();
+	if ((wd = inotify_add_watch(fd, filename, EVENTS)) == -1)
+		ERROR("Add watch error", 1)
+	read(fd, &event, sizeof(event) + MAXBUF);
+	printEvent(&event);
+	inotify_rm_watch(fd, wd);	/* clean up */
+	close(fd);
+	return 8;
+}
+
 int main(int argc, char *argv[])
 {
+	signal(SIGTERM, intHandler);
+	signal(SIGINT, intHandler);
+
 	if (argc < 2) {
 		fprintf(stderr, "Usage: %s FILENAME [COMMAND]\n", argv[0]);
 		return EXIT_FAILURE;
@@ -84,21 +112,13 @@ int main(int argc, char *argv[])
 		cmd = parseCmd();
 
 	/*inotify funtions start */
-	int fd, wd;
-	struct inotify_event event;
- start:
-	fd = inotify_init();
-	if ((wd = inotify_add_watch(fd, argv[1], EVENTS)) == -1)
-		error(1, 0, "Inotify add watch error, %s exist?", argv[1]);
-	read(fd, &event, sizeof(event) + MAXBUF);
-	printEvent(&event);
-	inotify_rm_watch(fd, wd);	/* clean up */
-	close(fd);
 
-	/*inotify funtions ends and run a command */
-	if (cmd) {
-		system(cmd);
-	}
-	goto start;		/* restart Monitor */
-	return 0;
+	while (keep_running) {
+		inotify(argv[1]);
+	
+		/*run a command */
+		if (cmd) 
+			system(cmd);
+	}	
+	return 5;
 }

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
 #include "argstr.h"
 #include "prtime.h"
 #include "ttoms.h"
@@ -9,7 +10,7 @@
 #define TRUE 1
 #define FALSE 0
 
-/*help message with exit value*/
+/* help message with exit value */
 void help()
 {
 	printf("USAGE: repeat [option] command\n");
@@ -20,13 +21,19 @@ void help()
 	printf("\t[u,i,s,m,h] microsecond millisecond second minute hour\n");
 }
 
+int keep_running = 1;
+void intHandler(int sig)
+{
+	keep_running = 0;
+}
+
 int main(int argc, char *argv[])
 {
 	if (argc < 1) {
 		help();
 		return 1;
 	}
-
+	signal(SIGINT, intHandler);
 	int opt, delay = DELAY_TIME, force_run = FALSE, show_time = TRUE;
 
 	while ((opt = getopt(argc, argv, "+d:fhnt")) != -1) {
@@ -38,7 +45,7 @@ int main(int argc, char *argv[])
 			force_run = TRUE;
 			break;
 		case 'h':
-			help(0);
+			help();
 			break;
 		case 'n':
 			delay = FALSE;
@@ -56,11 +63,12 @@ int main(int argc, char *argv[])
 
 	char *command = argstr(argc, argv, optind);
 
-	while (TRUE) {
+	while (keep_running) {
 		if (show_time == TRUE)
 			printf("[\e[01;32m%s\e[1;0m]\n", my_time());
 		else
 			printf("\n");
+
 		if (system(command) > 1 && force_run == FALSE)
 			break;
 		usleep(delay);

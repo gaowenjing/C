@@ -2,25 +2,24 @@
 #include <stdlib.h>
 #include <string.h>
 
-int callBack(int (*tmp)())
+int callBack(int (*tmp)(int))
 {
-	printf("%i\n", tmp(45));
 	return 9;
 }
 
 int tmp(int i)
 {
+	printf("%i\n", i);
 	return i;
 }
 
 int main(int argc, const char *argv[])
 {
-	//printf("%p\n", tmp);
-	//callBack(tmp);
-	//printf("%i\n", argc);
-	//return putchar(NULL);
-	//if ( '\n' ) puts("fuck");
-#ifdef OLD
+#ifdef BK
+	printf("%p\n", tmp);
+	callBack(tmp);
+#endif /* BK */
+#ifdef OLD //{{{
 	int i;
 	for (i=0; '\0' ;i++)
 		puts("fuck");
@@ -30,7 +29,15 @@ int main(int argc, const char *argv[])
 	puts("damn");
 	printf("%x\n", EOF);
 	return putchar('\0');
-#endif
-	return 10 == 11;
+#endif //}}}
+	fprintf(stderr, "This is an error message.\n");
+
+	FILE *output = popen("less", "w");
+	int i;
+	for (i = 0; i < 100 ; i++)
+		fprintf(output, "wtf\t%i\n", i);
+
+	pclose(output);
+	return 0;
 }
 

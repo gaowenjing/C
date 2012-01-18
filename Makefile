@@ -3,15 +3,18 @@ CC = gcc
 VPATH = ./libs
 #OUTPUT_OPTION = -o ./bin/$@
 .SUFFIXES: .c
-.PHONY: clean distclean all help install
+.PHONY: clean distclean all help install uninstall note
 
 bin := $(patsubst %.c,%,$(wildcard *.c)) 
 obj := $(patsubst %.c,%.o,$(wildcard *.c)) 
 
 all: $(bin)
+
 clean:
-	$(RM) $(bin)
 	$(RM) $(obj)
+
+distclean: clean
+	$(RM) $(bin)
 
 # X11 libs 
 xw: xw.c
@@ -40,6 +43,11 @@ ncurses: ncurses.c
 
 
 # Installation
-install_files := geoip xss privacy repeat
-install:
-	install $(install_files) ~/bin
+install_files := geoip xss privacy repeat dns
+install_to := ~/bin
+install: $(install_files)
+	install $(install_files) $(install_to)
+
+uninstall:
+	cd $(install_to) && \
+	$(RM) $(install_files)
