@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 	else 
 	{
 		char tmp[MAXBUF];
-		while( fgets(tmp, 1024, stdin) )
+		while( fgets(tmp, MAXBUF, stdin) )
 			//puts(escape(tmp, flag));
 			printf("%s", escape(tmp, flag));
 	}

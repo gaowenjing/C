@@ -22,19 +22,19 @@ void helpmsg(void)
 }
 
 /* Default Options */
-#define SLEEP_CMD "sudo pm-suspend"
-char sleep_command[20] = SLEEP_CMD;
+#define SLEEP_CMD "dbus-send --system --print-reply \
+	--dest=\"org.freedesktop.UPower\" \
+	/org/freedesktop/UPower \
+	org.freedesktop.UPower.Suspend > /dev/null"
 
 #define IDLE_TIME "30m" /* Default idle time 30 minute */
 
 #define TRUE 1
 #define FALSE 0
 
-#define KILL 0
-#define SHOWTIME 1
-#define DAEMON 2
-#define REPLACE 3
-#define KEEP_RUNNING 4
+enum {
+	KILL, SHOWTIME, DAEMON, REPLACE, KEEP_RUNNING
+};
 int flags[] = {
 	[KILL] 		= FALSE,
 	[SHOWTIME] 	= FALSE,
@@ -95,11 +95,11 @@ int checkRunning(void)
 void handleArguemnt(int argc, char *argv[])
 {
 	int opt;
-	while ((opt = getopt(argc, argv, "c:hnrsx")) != -1) {
+	while ((opt = getopt(argc, argv, "hnrsx")) != -1) {
 		switch (opt) {
-		case 'c':
-			strcpy(sleep_command, optarg);
-			break;
+//		case 'c':
+//			strcpy(sleep_command, optarg);
+//			break;
 		case 'n':
 			flags[DAEMON] = FALSE;
 			break;
@@ -129,7 +129,13 @@ void intHandler(int sig)
 
 int kill_exist_process(void)
 {
-	return kill(atoi(read_pid_string()), SIGINT);
+	if (kill(atoi(read_pid_string()), SIGINT) == 0) {
+		unlink(PIDFILE);
+		return 0;
+	} else {
+		return 1;
+	}
+
 }
 
 int main(int argc, char *argv[])
@@ -201,7 +207,7 @@ int main(int argc, char *argv[])
 		if (info->idle > idle_time) {
 
 			/* Run sleep command here */
-			if (system(sleep_command) == -1)
+			if (system(SLEEP_CMD) == -1)
 				ERROR("Error on trying to sleep.\n", FALSE)
 		}
 		sleep(3);

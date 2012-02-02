@@ -43,7 +43,7 @@ ncurses: ncurses.c
 
 
 # Installation
-install_files := geoip xss privacy repeat dns
+install_files := geoip xss privacy repeat dns ino urldecode urlencode
 install_to := ~/bin
 install: $(install_files)
 	install $(install_files) $(install_to)

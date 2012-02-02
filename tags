@@ -6,81 +6,92 @@
 !_TAG_PROGRAM_VERSION	5.8	//
 CC	Makefile	/^CC = gcc$/;"	m
 CFLAGS	Makefile	/^CFLAGS = -O2 -g -Wall -Ilibs$/;"	m
-CMDFILE	ino3.c	17;"	d	file:
-CONF	rc.c	8;"	d	file:
-CONF	rc1.c	8;"	d	file:
+CMDFILE	ino.c	20;"	d	file:
+DAEMON	xss.c	35;"	d	file:
 DB	sql.c	8;"	d	file:
 DELAY_TIME	repeat.c	9;"	d	file:
 DEVICE_NAME	modules/m.c	6;"	d	file:
+ERR	repeat.c	59;"	d	file:
+ERROR	ino.c	15;"	d	file:
 ERROR	rrow.c	8;"	d	file:
-EVENTS	ino.c	15;"	d	file:
-EVENTS	ino3.c	14;"	d	file:
-FROMCODE	geoip.c	14;"	d	file:
-FROMCODE	iconv.c	7;"	d	file:
-FROMCODE	iconv2.c	8;"	d	file:
-FROMCODE	showip.cpp	11;"	d	file:
-IDLE_TIME	xss.c	9;"	d	file:
-INO_VERSION	ino.c	13;"	d	file:
+ERROR	xss.c	10;"	d	file:
+EVENTS	ino.c	13;"	d	file:
+FALSE	repeat.c	11;"	d	file:
+FALSE	xss.c	31;"	d	file:
+FROMCODE	geoip.c	15;"	d	file:
+GNUSOCKET	pipe.c	83;"	d	file:
+IDLE_TIME	xss.c	28;"	d	file:
+KEEP_RUNNING	xss.c	37;"	d	file:
 KEYWORDS	privacy.c	9;"	d	file:
-MAXBUF	geoip.c	10;"	d	file:
-MAXBUF	iconv.c	8;"	d	file:
-MAXBUF	iconv2.c	7;"	d	file:
-MAXBUF	ino3.c	16;"	d	file:
-MAXBUF	showip.cpp	7;"	d	file:
+KILL	xss.c	33;"	d	file:
+MAXBUF	geoip.c	11;"	d	file:
+MAXBUF	ino.c	19;"	d	file:
+MAXBUF	xchar.c	5;"	d	file:
 Major	modules/m.c	/^static int Major;$/;"	v	file:
 MaxRowChar	rrow.c	7;"	d	file:
-NO	repeat.c	11;"	d	file:
-OUTPUT_OPTION	Makefile	/^OUTPUT_OPTION = -o ~\/bin\/$@$/;"	m
-QQWRY	geoip.c	7;"	d	file:
-QQWRY	showip.cpp	4;"	d	file:
-REDIRECT_MODE_1	geoip.c	8;"	d	file:
-REDIRECT_MODE_1	showip.cpp	5;"	d	file:
-REDIRECT_MODE_2	geoip.c	9;"	d	file:
-REDIRECT_MODE_2	showip.cpp	6;"	d	file:
-SLEEP_CMD	xss.c	10;"	d	file:
-TOCODE	geoip.c	15;"	d	file:
-TOCODE	iconv.c	6;"	d	file:
-TOCODE	iconv2.c	9;"	d	file:
-TOCODE	showip.cpp	12;"	d	file:
-USE_POINTER	iconv.c	10;"	d	file:
+OLD	rrow.c	18;"	d	file:
+PIDFILE	test/c.c	6;"	d	file:
+PIDFILE	xss.c	46;"	d	file:
+QQWRY	geoip.c	8;"	d	file:
+REDIRECT_MODE_1	geoip.c	9;"	d	file:
+REDIRECT_MODE_2	geoip.c	10;"	d	file:
+REPLACE	xss.c	36;"	d	file:
+SED	xchar.c	6;"	d	file:
+SHOWTIME	xss.c	34;"	d	file:
+SLEEP_CMD	xss.c	25;"	d	file:
+SQL	xchar.c	7;"	d	file:
+TOCODE	geoip.c	16;"	d	file:
+TRUE	repeat.c	10;"	d	file:
+TRUE	xss.c	30;"	d	file:
 VPATH	Makefile	/^VPATH = .\/libs$/;"	m
 WrongIP	libs/ip2int.c	6;"	d	file:
-YES	repeat.c	10;"	d	file:
-a	libs/ip2int.c	/^	unsigned int a;$/;"	m	struct:ip_format	file:
-argstr	libs/argstr.c	/^char *argstr(int argc, char *argv[], int f){$/;"	f
-b	libs/ip2int.c	/^	unsigned int b;$/;"	m	struct:ip_format	file:
+argstr	libs/argstr.c	/^char *argstr(int argc, char *argv[], int f)$/;"	f
 beNumber	geoip.c	/^int beNumber(char c)$/;"	f
-beNumber	showip.cpp	/^int beNumber(char c)$/;"	f
-c	libs/ip2int.c	/^	unsigned int c;$/;"	m	struct:ip_format	file:
+bin	Makefile	/^bin := $(patsubst %.c,%,$(wildcard *.c)) $/;"	m
 c2s	libs/xke.c	8;"	d	file:
 callBack	sql.c	/^int callBack(void* argv, int colume, char** text, char** name)$/;"	f
-callBack	tmp.c	/^int callBack(int (*tmp)())$/;"	f
-convert	iconv2.c	/^void convert (char *inbuf, char *outbuf)$/;"	f
-count_char	libs/char.c	/^int count_char(char *c){$/;"	f
-d	libs/ip2int.c	/^	unsigned int d;$/;"	m	struct:ip_format	file:
-gbk2utf8	geoip.c	/^char *gbk2utf8 (char *inbuf)$/;"	f
-gbk2utf8	showip.cpp	/^char *gbk2utf8 (char *inbuf)$/;"	f
-getAddress	geoip.c	/^void getAddress(FILE *fp, unsigned long start, char **country, char **location)$/;"	f
-getAddress	showip.cpp	/^void getAddress(FILE *fp, unsigned long start, char **country, char **location)$/;"	f
-getHead	geoip.c	/^void getHead(FILE *fp,unsigned long *start,unsigned long *end)$/;"	f
-getHead	showip.cpp	/^void getHead(FILE *fp,unsigned long *start,unsigned long *end)$/;"	f
+callBack	tmp.c	/^int callBack(int (*tmp)(int))$/;"	f
+checkRunning	xss.c	/^int checkRunning(void)$/;"	f
+count	exam.c	/^	int count;$/;"	m	struct:__anon2	file:
+count_char	libs/char.c	/^int count_char(char *c)$/;"	f
+create_pid_file	xss.c	/^int create_pid_file(void)$/;"	f
+delay	repeat.c	/^int delay = DELAY_TIME,$/;"	v
+error	leak.c	4;"	d	file:
+escape	xchar.c	/^char *escape(char *string, int specify)$/;"	f
+exist_pid	xss.c	/^char *exist_pid;$/;"	v
+flags	xss.c	/^int flags[] = {$/;"	v
+force_run	repeat.c	/^    force_run = FALSE,$/;"	v
+gbk2utf8	geoip.c	/^char *gbk2utf8(char *inbuf)$/;"	f
+getAddress	geoip.c	/^void getAddress(FILE * fp, unsigned long start, char **country, char **location)$/;"	f
+getHead	geoip.c	/^void getHead(FILE * fp, unsigned long *start, unsigned long *end)$/;"	f
 getIP	geoip.c	/^unsigned long getIP(char *ip_addr)$/;"	f
-getIP	showip.cpp	/^unsigned long getIP(char *ip_addr)$/;"	f
-getString	geoip.c	/^int getString(FILE *fp, unsigned long start, char **string)$/;"	f
-getString	showip.cpp	/^int getString(FILE *fp, unsigned long start, char **string)$/;"	f
-getValue	geoip.c	/^unsigned long getValue(FILE *fp, unsigned long start, int length)$/;"	f
-getValue	showip.cpp	/^unsigned long getValue(FILE *fp, unsigned long start, int length)$/;"	f
-help	ncurses.c	/^void help(){$/;"	f
-help	repeat.c	/^void help(int exval)$/;"	f
-help_msg	ino.c	/^void help_msg(char *s, int exval){$/;"	f
-helpmsg	xss.c	/^void helpmsg(int exval){$/;"	f
-iconv_return	iconv2.c	/^char *iconv_return (char *inbuf)$/;"	f
+getString	geoip.c	/^int getString(FILE * fp, unsigned long start, char **string)$/;"	f
+getValue	geoip.c	/^unsigned long getValue(FILE * fp, unsigned long start, int length)$/;"	f
+get_named_socket	conn.c	/^int get_named_socket (const char *filename)$/;"	f
+handleArgs	dns.c	/^void handleArgs(int argc, char *argv[])$/;"	f
+handleArguemnt	xss.c	/^void handleArguemnt(int argc, char *argv[])$/;"	f
+handleArgument	repeat.c	/^int handleArgument(int argc, char *argv[])$/;"	f
+head	exam.c	/^	struct node_t *head;$/;"	m	struct:__anon2	typeref:struct:__anon2::node_t	file:
+help	ncurses.c	/^void help()$/;"	f
+help	repeat.c	/^void help()$/;"	f
+helpmsg	xss.c	/^void helpmsg(void)$/;"	f
+inotify	ino.c	/^int inotify(char *filename)$/;"	f
+install_files	Makefile	/^install_files := geoip xss privacy repeat dns$/;"	m
+install_to	Makefile	/^install_to := ~\/bin$/;"	m
+intHandler	ino.c	/^void intHandler(int sig)$/;"	f
+intHandler	pipe.c	/^void intHandler(int sig)$/;"	f
+intHandler	repeat.c	/^void intHandler(int sig)$/;"	f
+intHandler	xss.c	/^void intHandler(int sig)$/;"	f
 ip2int	libs/ip2int.c	/^unsigned int ip2int(char *s)$/;"	f
-ip_format	libs/ip2int.c	/^typedef struct ip_format {$/;"	s	file:
-ip_format	libs/ip2int.c	/^} ip_format;$/;"	t	typeref:struct:ip_format	file:
+isQuote	fd.c	/^char *isQuote(char *string)$/;"	f
+keep_running	ino.c	/^int keep_running = 1;$/;"	v
+keep_running	pipe.c	/^int keep_running = 1;$/;"	v
+keep_running	repeat.c	/^    keep_running = TRUE;$/;"	v
 keywords	privacy.c	/^char *keywords[] = KEYWORDS;$/;"	v
+kill_exist_process	xss.c	/^int kill_exist_process(void)$/;"	f
 leak	leak.c	/^void leak(void)$/;"	f
-left_word	libs/char.h	/^	char *left_word,*right_word;$/;"	m	struct:__anon1
+left_word	libs/char.h	/^	char *left_word, *right_word;$/;"	m	struct:__anon1
+list_t	exam.c	/^} list_t;$/;"	t	typeref:struct:__anon2	file:
 m_exit	modules/m.c	/^module_exit(m_exit);$/;"	v
 m_exit	modules/m.c	/^static void m_exit(void){$/;"	f	file:
 m_init	modules/m.c	/^module_init(m_init);$/;"	v
@@ -90,57 +101,72 @@ m_opts	modules/m.c	/^static struct file_operations m_opts = {$/;"	v	typeref:stru
 m_read	modules/m.c	/^static ssize_t m_read(struct file *file, char __user *buf, size_t lenght, loff_t *offset){$/;"	f	file:
 m_release	modules/m.c	/^static int m_release(struct inode *inode, struct file *file){$/;"	f	file:
 m_write	modules/m.c	/^static ssize_t m_write(struct file *file, const char __user *buf, size_t lenght, loff_t *offset){$/;"	f	file:
-main	dns.c	/^int main()$/;"	f
-main	ec4sed.c	/^int main(int argc, char *argv[])$/;"	f
-main	ec4sql.c	/^int main(int argc, char *argv[])$/;"	f
+main	conn.c	/^int main(int argc, const char *argv[])$/;"	f
+main	dns.c	/^int main(int argc, char *argv[])$/;"	f
+main	exam.c	/^main()$/;"	f
+main	fd.c	/^int main(int argc, const char *argv[])$/;"	f
 main	geoip.c	/^int main(int argc, char *argv[])$/;"	f
-main	iconv.c	/^int main(int argc, const char *argv[])$/;"	f
-main	iconv2.c	/^int main(int argc, char *argv[])$/;"	f
 main	ino.c	/^int main(int argc, char *argv[])$/;"	f
-main	ino3.c	/^int main(int argc, char *argv[])$/;"	f
 main	leak.c	/^int main(int argc, const char *argv[])$/;"	f
 main	ncurses.c	/^int main(int argc, const char *argv[])$/;"	f
-main	net.c	/^int main(int argc,char **argv){$/;"	f
+main	net.c	/^int main(int argc, char **argv)$/;"	f
+main	pipe.c	/^int main(int argc, const char *argv[])$/;"	f
 main	privacy.c	/^int main(int argc, char *argv[])$/;"	f
-main	rc.c	/^int main(int argc, const char *argv[])$/;"	f
-main	rc1.c	/^int main(int argc, const char *argv[])$/;"	f
 main	recurse.c	/^int main(int argc, const char *argv[])$/;"	f
-main	regexp.c	/^int main(int argc, char *argv[])$/;"	f
 main	repeat.c	/^int main(int argc, char *argv[])$/;"	f
 main	rrow.c	/^int main(int argc, const char *argv[])$/;"	f
-main	showip.cpp	/^int main(int argc, char *argv[])$/;"	f
 main	sql.c	/^int main(int argc, char *argv[])$/;"	f
+main	test/a.c	/^int main(int argc, const char *argv[])$/;"	f
+main	test/b.c	/^int main(int argc, const char *argv[])$/;"	f
+main	test/c.c	/^int main(int argc, const char *argv[])$/;"	f
+main	test/d.c	/^int main(int argc, const char *argv[])$/;"	f
 main	tmp.c	/^int main(int argc, const char *argv[])$/;"	f
+main	xchar.c	/^int main(int argc, char *argv[])$/;"	f
 main	xss.c	/^int main(int argc, char *argv[])$/;"	f
 main	xw.c	/^int main(int argc, const char *argv[])$/;"	f
-my_time	libs/prtime.c	/^char *my_time(void){$/;"	f
-parseCmd	ino3.c	/^char *parseCmd(void)$/;"	f
-parseDatabasePath	privacy.c	/^char * parseDatabasePath(void)$/;"	f
-pr_event	ino.c	/^void pr_event(uint32_t emask, char *filename, uint32_t len, char *path){$/;"	f
-pr_time	libs/prtime.c	/^void pr_time(void){$/;"	f
-printEvent	ino3.c	/^void printEvent(struct inotify_event *event)$/;"	f
-privacy	privacy.c	/^void privacy(char *keyword, sqlite3 *db)$/;"	f
-putAll	geoip.c	/^unsigned long putAll(FILE *fp, FILE *out, unsigned long index_start, unsigned long index_end)$/;"	f
-putAll	showip.cpp	/^unsigned long putAll(FILE *fp, FILE *out, unsigned long index_start, unsigned long index_end)$/;"	f
-r	recurse.c	/^int r (int i) {$/;"	f
-read_stdin	iconv2.c	/^void read_stdin (char *inbuf, size_t len)$/;"	f
+make_named_socket	pipe.c	/^int make_named_socket (const char *filename)$/;"	f
+my_time	libs/prtime.c	/^char *my_time(void)$/;"	f
+next	exam.c	/^	struct node_t *next;$/;"	m	struct:node_t	typeref:struct:node_t::node_t	file:
+node_t	exam.c	/^typedef struct node_t {$/;"	s	file:
+node_t	exam.c	/^} node_t;$/;"	t	typeref:struct:node_t	file:
+obj	Makefile	/^obj := $(patsubst %.c,%.o,$(wildcard *.c)) $/;"	m
+parseCmd	ino.c	/^char *parseCmd(void)$/;"	f
+parseDatabasePath	privacy.c	/^char *parseDatabasePath(void)$/;"	f
+pr_time	libs/prtime.c	/^void pr_time(void)$/;"	f
+printEvent	ino.c	/^void printEvent(struct inotify_event *event)$/;"	f
+privacy	privacy.c	/^void privacy(char *keyword, sqlite3 * db)$/;"	f
+putAll	geoip.c	/^unsigned long putAll(FILE * fp, FILE * out, unsigned long index_start,$/;"	f
+queryIP	dns.c	/^int queryIP(char *host)$/;"	f
+r	recurse.c	/^int r(int i)$/;"	f
+read_pid_string	test/c.c	/^char *read_pid_string(void)$/;"	f
+read_pid_string	xss.c	/^char *read_pid_string(void)$/;"	f
 resolver	geoip.c	/^char *resolver(char *host)$/;"	f
-right_word	libs/char.h	/^	char *left_word,*right_word;$/;"	m	struct:__anon1
+right_word	libs/char.h	/^	char *left_word, *right_word;$/;"	m	struct:__anon1
 s2c	libs/xke.c	7;"	d	file:
-sadd	libs/argstr.c	/^void sadd(char *original, char *addition){ $/;"	f
-scp	libs/argstr.c	/^void scp(char *from, char *to){$/;"	f
-searchIP	geoip.c	/^unsigned long searchIP(FILE *fp, unsigned long index_start, \\$/;"	f
-searchIP	showip.cpp	/^unsigned long searchIP(FILE *fp, unsigned long index_start, \\$/;"	f
-shrink_char	libs/char.c	/^char *shrink_char(char *word,int n) {$/;"	f
-slen	libs/argstr.c	/^size_t slen(char *word){$/;"	f
-something	ncurses.c	/^void something( char k ){$/;"	f
-split_word	libs/char.c	/^sw split_word(char *word , int n) {$/;"	f
+sadd	libs/argstr.c	/^void sadd(char *original, char *addition)$/;"	f
+scp	libs/argstr.c	/^void scp(char *from, char *to)$/;"	f
+searchIP	geoip.c	/^unsigned long searchIP(FILE * fp, unsigned long index_start,$/;"	f
+sedCharacter	xchar.c	/^char sedCharacter[] = {'\\'', '\/', ' ', '\\\\', '.', '*', '?', '$', '[', ']', '\\0'};$/;"	v
+show_cname	dns.c	/^int show_cname = 0;$/;"	v
+show_hostname	dns.c	/^int show_hostname = 0;$/;"	v
+show_request	dns.c	/^int show_request = 0;$/;"	v
+show_time	repeat.c	/^    show_time = TRUE,$/;"	v
+shrink_char	libs/char.c	/^char *shrink_char(char *word, int n)$/;"	f
+sleep_command	xss.c	/^char sleep_command[20] = SLEEP_CMD;$/;"	v
+slen	libs/argstr.c	/^size_t slen(char *word)$/;"	f
+something	ncurses.c	/^void something(char k)$/;"	f
+split_word	libs/char.c	/^sw split_word(char *word, int n)$/;"	f
+sqlCharacter	xchar.c	/^char sqlCharacter[] = { '\\'', '\\0'};$/;"	v
 sw	libs/char.h	/^} sw;$/;"	t	typeref:struct:__anon1
-t	libs/ip2int.c	/^	unsigned int t;$/;"	m	struct:ip_format	file:
+tail	exam.c	/^	struct node_t *tail;$/;"	m	struct:__anon2	typeref:struct:__anon2::node_t	file:
+thefilter	test/c.c	/^int thefilter(const struct dirent *p)$/;"	f
+thefilter	xss.c	/^int thefilter(const struct dirent *p)$/;"	f
+thefunc	test/d.c	/^char *thefunc(void)$/;"	f
 tmp	tmp.c	/^int tmp(int i)$/;"	f
 ttoms	libs/ttoms.c	/^double ttoms(char *t)$/;"	f
 ttous	libs/ttoms.c	/^double ttous(char *t)$/;"	f
+usage	dns.c	/^void usage(char *name)$/;"	f
 usage	geoip.c	/^void usage(char *app_name)$/;"	f
-usage	showip.cpp	/^void usage(char *app_name)$/;"	f
+value	exam.c	/^	int value;$/;"	m	struct:node_t	file:
 verbose_flag	privacy.c	/^int verbose_flag = 0;$/;"	v
 xke	libs/xke.c	/^int xke(void)$/;"	f

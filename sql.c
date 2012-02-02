@@ -7,10 +7,10 @@
 
 #define DB "keyword.sqlite"
 
-int callBack(void* argv, int colume, char** text, char** name)
+int callBack(void* argv, int column, char** text, char** name)
 {
 
-	printf("colume = %i\n", colume);
+	printf("column = %i\n", column);
 	printf("text = %s\n", text[0]);
 	printf("text = %s\n", text[1]);
 	printf("name = %s\n", name[0]);
